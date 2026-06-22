@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Member C: Spring MVC & CRUD Logic Lead Guide</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 { color: #2c3e50; }
+        h1 { border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        pre {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-left: 4px solid #3498db;
+            padding: 10px;
+            overflow-x: auto;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+            page-break-inside: avoid;
+        }
+        .tip {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 10px;
+            margin: 20px 0;
+        }
+        @media print {
+            body { max-width: 100%; padding: 0; }
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body onload="window.print()">
+    <div class="no-print tip" style="background-color: #fff3cd; border-color: #ffeeba;">
+        <strong>Instructions:</strong> Your browser's print dialog should have opened automatically. Change the Destination to <strong>"Save as PDF"</strong> and click Save to generate your PDF file.
+    </div>
+
+    <h1>Member C: Spring MVC & CRUD Logic Lead Guide</h1>
+    <p>Welcome to your role as <strong>Member C</strong> for the Esports Tournament Management Console! You are responsible for the "glue" layer of the application (the Application Design / MVC architecture). You will write the Controllers and Services that translate UI actions (from Member B) into database operations (from Member A).</p>
+
+    <div class="tip">
+        <strong>Tip:</strong> Make sure Member A has already created the Entities (<code>Team</code>, <code>Player</code>, <code>Match</code>) and Repositories before you begin, as your code depends on them!
+    </div>
+
+    <h2>Step 1: Create the Service Layer (Days 4, 7-8)</h2>
+    <p>Services handle the complex business logic and database transactions. Create a new folder/package called <code>service</code> (<code>src/main/java/com/esports/tournamentconsole/service</code>) and add these two files:</p>
+
+    <h3>1. TeamService.java</h3>
+    <p>This file handles registering a team (saving the team and its 3 players at the same time) and the complex "cascade delete" logic (preventing a team from being deleted if they have matches).</p>
+<pre><code>package com.esports.tournamentconsole.service;
+
+import com.esports.tournamentconsole.model.Match;
+import com.esports.tournamentconsole.model.Player;
+import com.esports.tournamentconsole.model.Team;
+import com.esports.tournamentconsole.repository.MatchRepository;
+import com.esports.tournamentconsole.repository.TeamRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
+
+@Service
+public class TeamService {
+    private final TeamRepository teamRepository;
+    private final MatchRepository matchRepository;
+
+    public TeamService(TeamRepository teamRepository, MatchRepository matchRepository) {
+        this.teamRepository = teamRepository;
+        this.matchRepository = matchRepository;
+    }
+
+    public List&lt;Team&gt; findAll() {
+        return teamRepository.findAll();
+    }
+
+    public Team findById(Long teamId) {
+        return teamRepository.findById(teamId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Team not found: " + teamId));
+    }
+
+    @Transactional
+    public Team registerTeamWithRoster(Team team, List&lt;Player&gt; roster) {
+        if (teamRepository.existsByTeamName(team.getTeamName())) {
+            throw new IllegalArgumentException("Team name already exists: " + team.getTeamName());
+        }
+        for (Player p : roster) {
+            p.setTeam(team); // set both sides of the relationship
+            team.getPlayers().add(p);
+        }
+        return teamRepository.save(team);
+    }
+
+    public List&lt;Match&gt; findMatchesForTeam(Long teamId) {
+        return matchRepository.findAllMatchesInvolvingTeam(teamId);
+    }
+
+    @Transactional
+    public void deleteTeamCascade(Long teamId) {
+        Team team = findById(teamId);
+        List&lt;Match&gt; linkedMatches = matchRepository.findAllMatchesInvolvingTeam(teamId);
+        
+        if (!linkedMatches.isEmpty()) {
+            throw new IllegalStateException(
+                "Cannot delete team '" + team.getTeamName() + "': "
+                + linkedMatches.size() + " match(es) still reference this team. "
+                + "Remove or reassign those matches first.");
+        }
+        teamRepository.delete(team);
+    }
+}
+</code></pre>
+
+    <h3>2. MatchService.java</h3>
+    <p>This file handles querying upcoming matches, saving match scores, and aggregating the leaderboard data.</p>
+<pre><code>package com.esports.tournamentconsole.service;
+
+import com.esports.tournamentconsole.model.Match;
+import com.esports.tournamentconsole.model.Team;
+import com.esports.tournamentconsole.repository.MatchRepository;
+import com.esports.tournamentconsole.repository.TeamRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
+public class MatchService {
+    private final MatchRepository matchRepository;
+    private final TeamRepository teamRepository;
+
+    public MatchService(MatchRepository matchRepository, TeamRepository teamRepository) {
+        this.matchRepository = matchRepository;
+        this.teamRepository = teamRepository;
+    }
+
+    public List&lt;Match&gt; findUpcoming() {
+        return matchRepository.findByWinnerTeamIsNullOrderByScheduledTimeAsc();
+    }
+
+    public Match findById(Long matchId) {
+        return matchRepository.findById(matchId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Match not found: " + matchId));
+    }
+
+    @Transactional
+    public Match updateScore(Long matchId, Long winnerTeamId, String score) {
+        Match match = findById(matchId);
+        Long t1 = match.getTeam1().getTeamId();
+        Long t2 = match.getTeam2().getTeamId();
+        
+        if (!winnerTeamId.equals(t1) &amp;&amp; !winnerTeamId.equals(t2)) {
+            throw new IllegalArgumentException("Winner must be one of the two competing teams.");
+        }
+        
+        Team winner = teamRepository.findById(winnerTeamId)
+                .orElseThrow(() -&gt; new IllegalArgumentException("Winner team not found"));
+                
+        match.setWinnerTeam(winner);
+        match.setScore(score);
+        return matchRepository.save(match);
+    }
+
+    public List&lt;Map&lt;String, Object&gt;&gt; buildLeaderboard() {
+        Map&lt;Long, Map&lt;String, Object&gt;&gt; board = new LinkedHashMap&lt;&gt;();
+        
+        for (Team t : teamRepository.findAll()) {
+            Map&lt;String, Object&gt; row = new LinkedHashMap&lt;&gt;();
+            row.put("teamId", t.getTeamId());
+            row.put("teamName", t.getTeamName());
+            row.put("region", t.getRegion());
+            row.put("wins", 0L);
+            board.put(t.getTeamId(), row);
+        }
+        
+        for (Object[] result : matchRepository.countWinsPerTeam()) {
+            Long teamId = (Long) result[0];
+            Long wins = (Long) result[2];
+            if (board.containsKey(teamId)) {
+                board.get(teamId).put("wins", wins);
+            }
+        }
+        
+        List&lt;Map&lt;String, Object&gt;&gt; leaderboard = new ArrayList&lt;&gt;(board.values());
+        leaderboard.sort((a, b) -&gt; Long.compare((Long) b.get("wins"), (Long) a.get("wins")));
+        return leaderboard;
+    }
+}
+</code></pre>
+
+    <h2>Step 2: Create the Controllers (Days 5-9)</h2>
+    <p>Controllers determine what happens when a user visits a specific URL. Create a new folder/package called <code>controller</code> and add these three files:</p>
+
+    <h3>1. TeamController.java</h3>
+<pre><code>package com.esports.tournamentconsole.controller;
+
+import com.esports.tournamentconsole.model.Player;
+import com.esports.tournamentconsole.model.Team;
+import com.esports.tournamentconsole.service.TeamService;
+import jakarta.validation.Valid;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.ArrayList;
+
+@Controller
+@RequestMapping("/teams")
+public class TeamController {
+    private final TeamService teamService;
+
+    public TeamController(TeamService teamService) {
+        this.teamService = teamService;
+    }
+
+    @GetMapping
+    public String listTeams(Model model) {
+        model.addAttribute("teams", teamService.findAll());
+        return "teams-list";
+    }
+
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        Team team = new Team();
+        for (int i = 0; i &lt; 3; i++) team.getPlayers().add(new Player());
+        model.addAttribute("team", team);
+        return "register-team";
+    }
+
+    @PostMapping("/register")
+    public String registerTeam(@Valid @ModelAttribute("team") Team team,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) return "register-team";
+        try {
+            teamService.registerTeamWithRoster(team, new ArrayList&lt;&gt;(team.getPlayers()));
+            redirectAttributes.addFlashAttribute("successMessage", "Team registered successfully!");
+            return "redirect:/teams";
+        } catch (IllegalArgumentException ex) {
+            bindingResult.rejectValue("teamName", "duplicate", ex.getMessage());
+            return "register-team";
+        }
+    }
+
+    @GetMapping("/{id}/delete")
+    public String confirmDelete(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("team", teamService.findById(id));
+        model.addAttribute("linkedMatches", teamService.findMatchesForTeam(id));
+        return "delete-team";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteTeam(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            teamService.deleteTeamCascade(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Team removed successfully.");
+        } catch (IllegalStateException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        }
+        return "redirect:/teams";
+    }
+}
+</code></pre>
+
+    <h3>2. LeaderboardController.java</h3>
+<pre><code>package com.esports.tournamentconsole.controller;
+
+import com.esports.tournamentconsole.service.MatchService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class LeaderboardController {
+    private final MatchService matchService;
+
+    public LeaderboardController(MatchService matchService) {
+        this.matchService = matchService;
+    }
+
+    @GetMapping("/leaderboard")
+    public String leaderboard(Model model) {
+        model.addAttribute("leaderboard", matchService.buildLeaderboard());
+        return "leaderboard";
+    }
+}
+</code></pre>
+
+    <h3>3. MatchController.java</h3>
+<pre><code>package com.esports.tournamentconsole.controller;
+
+import com.esports.tournamentconsole.service.MatchService;
+import com.esports.tournamentconsole.service.TeamService;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+@Controller
+@RequestMapping("/matches")
+public class MatchController {
+    private final MatchService matchService;
+    private final TeamService teamService;
+
+    public MatchController(MatchService matchService, TeamService teamService) {
+        this.matchService = matchService;
+        this.teamService = teamService;
+    }
+
+    @GetMapping("/upcoming")
+    public String upcomingMatches(Model model) {
+        model.addAttribute("matches", matchService.findUpcoming());
+        return "schedule";
+    }
+
+    @GetMapping("/{id}/update-score")
+    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("match", matchService.findById(id));
+        return "update-score";
+    }
+
+    @PostMapping("/{id}/update-score")
+    public String updateScore(@PathVariable("id") Long id,
+                              @RequestParam("winnerTeamId") Long winnerTeamId,
+                              @RequestParam("score") String score,
+                              RedirectAttributes redirectAttributes) {
+        try {
+            matchService.updateScore(id, winnerTeamId, score);
+            redirectAttributes.addFlashAttribute("successMessage", "Match result saved.");
+            return "redirect:/leaderboard";
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+            return "redirect:/matches/" + id + "/update-score";
+        }
+    }
+}
+</code></pre>
+    <div class="tip">
+        <strong>Final Step:</strong> Coordinate with Member B to ensure the variable names you pass to the view via <code>model.addAttribute("team", ...)</code> match exactly what Member B writes in their HTML.
+    </div>
+</body>
+</html>

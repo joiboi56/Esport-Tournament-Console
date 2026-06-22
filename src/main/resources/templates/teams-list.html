@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: header('Teams')}"></head>
+<body>
+<div th:replace="~{fragments/layout :: nav}"></div>
+<div class="container mt-4">
+    <h2>Registered Teams</h2>
+    <a href="/teams/register" class="btn btn-primary mb-3">Register New Team</a>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Region</th>
+            <th>Captain</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="team : ${teams}">
+            <td th:text="${team.teamId}"></td>
+            <td th:text="${team.teamName}"></td>
+            <td th:text="${team.region}"></td>
+            <td th:text="${team.captainName}"></td>
+            <td>
+                <a th:href="@{/teams/{id}/delete(id=${team.teamId})}" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
