@@ -1,0 +1,20 @@
+body {
+    background-color: #f5f7fa;
+}
+
+.card {
+    border: none;
+    border-radius: 12px;
+}
+
+.navbar {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+footer {
+    margin-top: 50px;
+}
+
+.btn {
+    border-radius: 8px;
+}

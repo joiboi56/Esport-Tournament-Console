@@ -6,3 +6,71 @@
     <link rel="stylesheet" th:href="@{/css?style.css}">
 </head>
 <body>
+
+
+<div th:replace="fragments/nav :: nav"></div>
+
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h2>Register New Team</h2>
+
+        <form th:action="@{/teams/register}" th:object="${team}" method="post">
+
+            <div class="mb-3">
+                <label class="form-label">Team Name</label>
+                <input type="text" class="form-control" th:field="*{teamName}" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('teamName')}" th:errors="*{teamName}"></div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Region</label>
+                <select class="form-select" th:field="*{region}" required>
+                    <option value="">Choose Region</option>
+                    <option value="SEA">SEA</option>
+                    <option value="EU">EU</option>
+                    <option value="NA">NA</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Captain Name</label>
+                <input type="text" class="form-control" th:field="*{captainName}" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('captainName')}" th:errors="*{captainName}"></div>
+            </div>
+
+            <h4 class="mt-4">Player Roster</h4>
+
+            <div th:each="player, iter : *{players}" class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Game Handle</label>
+                    <input type="text" class="form-control"
+                           th:field="*{players[__${iter.index}__].gameHandle}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">In-Game Role</label>
+                    <select class="form-select"
+                            th:field="*{players[__${iter.index}__].inGameRole}" required>
+                        <option value="">Choose Role</option>
+                        <option value="Top">Top</option>
+                        <option value="Jungle">Jungle</option>
+                        <option value="Mid">Mid</option>
+                        <option value="ADC">ADC</option>
+                        <option value="Support">Support</option>
+                        <option value="Entry">Entry</option>
+                        <option value="Sniper">Sniper</option>
+                        <option value="Coach">Coach</option>
+                    </select>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Register Team</button>
+            <a th:href="@{/teams}" class="btn btn-secondary mt-3">Cancel</a>
+        </form>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+</body>
+</html>
