@@ -1,3 +1,4 @@
+
 .esports-body {
     background: #030712;
     color: #f8fafc;
@@ -289,4 +290,298 @@
 .cancel-btn:hover {
     background: #1e293b;
     color: white;
+}
+.alert-danger {
+    background: rgba(220, 38, 38, 0.15);
+    border: 1px solid #ef4444;
+    color: #fecaca;
+    border-radius: 12px;
+}
+
+.alert-danger h5 {
+    color: #f87171;
+    font-weight: 900;
+}
+
+.gaming-input.p-3 {
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+}
+.delete-btn {
+    background: linear-gradient(90deg, #dc2626, #b91c1c);
+    color: white;
+    border: none;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.region-badge {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+    border: 1px solid #a855f7;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.wins-badge {
+    color: #22c55e;
+    font-size: 18px;
+    font-weight: 900;
+}
+
+.delete-btn {
+    background: linear-gradient(90deg, #dc2626, #991b1b);
+    color: white;
+    border: none;
+    font-weight: 700;
+    min-width: 90px;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.roster-table {
+    color: #f8fafc;
+    border: 1px solid #334155;
+}
+
+.roster-table thead th {
+    background: #111827;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 800;
+    border-color: #334155;
+}
+
+.roster-table td {
+    background: rgba(2, 6, 23, 0.85);
+    border-color: #334155;
+    color: #f8fafc !important;
+    vertical-align: middle;
+}
+
+.roster-table td strong {
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+.roster-table tbody tr:hover {
+    background: rgba(168, 85, 247, 0.08);
+}
+
+.roster-table tbody tr:hover td {
+    color: #ffffff !important;
+}
+
+.player-number {
+    color: #c084fc !important;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.region-badge {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+    border: 1px solid #a855f7;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: 700;
+}
+
+.delete-btn {
+    background: linear-gradient(90deg, #dc2626, #991b1b);
+    color: white;
+    border: none;
+    font-weight: 700;
+    min-width: 90px;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(90deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.text-secondary {
+    color: #94a3b8 !important;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 20px 24px;
+}
+
+.rank-box {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(168, 85, 247, 0.18);
+    border: 2px solid #a855f7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #c084fc;
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.team-info {
+    flex: 1;
+    margin-left: 24px;
+}
+
+.team-info h4 {
+    color: white;
+    font-weight: 900;
+    margin: 0;
+}
+
+.team-info p {
+    color: #94a3b8;
+    margin: 4px 0 0;
+    font-weight: 700;
+}
+
+.wins-box {
+    text-align: center;
+    color: #22c55e;
+    font-weight: 900;
+}
+
+.wins-box span {
+    display: block;
+    font-size: 34px;
+}
+
+.wins-box small {
+    color: #cbd5e1;
+    text-transform: uppercase;
+}
+
+.rank-first {
+    border-color: #facc15;
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.25);
+}
+
+.rank-second {
+    border-color: #cbd5e1;
+}
+
+.rank-third {
+    border-color: #f97316;
+}
+
+.match-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.match-card {
+    display: grid;
+    grid-template-columns: 170px 1fr 180px;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(90deg, rgba(2, 6, 23, 0.95), rgba(30, 41, 59, 0.8));
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 22px;
+    box-shadow: 0 0 18px rgba(124, 58, 237, 0.12);
+}
+
+.match-card:hover {
+    border-color: #a855f7;
+    box-shadow: 0 0 24px rgba(168, 85, 247, 0.2);
+}
+
+.match-time {
+    border-left: 4px solid #a855f7;
+    padding-left: 16px;
+}
+
+.match-time span {
+    display: block;
+    color: #f8fafc;
+    font-weight: 900;
+    font-size: 16px;
+}
+
+.match-time small {
+    color: #c084fc;
+    font-weight: 800;
+    font-size: 20px;
+}
+
+.match-teams {
+    display: grid;
+    grid-template-columns: 1fr 70px 1fr;
+    align-items: center;
+    gap: 20px;
+}
+
+.match-team h4 {
+    color: #ffffff;
+    font-weight: 900;
+    margin: 0;
+}
+
+.versus-box {
+    background: rgba(168, 85, 247, 0.18);
+    border: 1px solid #a855f7;
+    color: #c084fc;
+    border-radius: 50%;
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+}
+
+.match-btn {
+    background: linear-gradient(90deg, #9333ea, #2563eb);
+    color: white;
+    border: none;
+    font-weight: 900;
+    text-transform: uppercase;
+    padding: 12px 18px;
+    border-radius: 8px;
+}
+
+.match-btn:hover {
+    background: linear-gradient(90deg, #a855f7, #3b82f6);
+    color: white;
+}
+
+.empty-match-box {
+    text-align: center;
+    border: 1px dashed #a855f7;
+    border-radius: 14px;
+    padding: 40px;
+    color: #cbd5e1;
+}
+
+.empty-match-box h5 {
+    color: #c084fc;
+    font-weight: 900;
 }
