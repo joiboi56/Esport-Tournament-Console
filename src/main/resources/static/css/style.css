@@ -1,20 +1,292 @@
-body {
-    background-color: #f5f7fa;
+.esports-body {
+    background: #030712;
+    color: #f8fafc;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
 }
 
-.card {
-    border: none;
-    border-radius: 12px;
+.esports-nav {
+    background: #020617;
+    border-bottom: 1px solid #1e293b;
+    padding: 14px 0;
 }
 
-.navbar {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+.esports-logo {
+    color: white;
+    font-weight: 900;
+    letter-spacing: 2px;
 }
 
-footer {
-    margin-top: 50px;
+.esports-logo span {
+    display: block;
+    font-size: 12px;
+    color: #a855f7;
+    letter-spacing: 3px;
 }
 
-.btn {
+.esports-nav .nav-link {
+    color: white;
+    font-weight: 700;
+    margin: 0 12px;
+}
+
+.esports-nav .nav-link:hover {
+    color: #a855f7;
+}
+
+.nav-register-btn {
+    background: linear-gradient(90deg, #7c3aed, #4f46e5);
+    color: white;
+    font-weight: 800;
     border-radius: 8px;
+    padding: 10px 20px;
+}
+
+.esports-hero {
+    padding: 55px 20px;
+    background:
+            linear-gradient(90deg, rgba(15, 23, 42, 0.95), rgba(88, 28, 135, 0.75)),
+            url("https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1600&q=80");
+    background-size: cover;
+    background-position: center;
+    border-bottom: 1px solid #334155;
+}
+
+.esports-hero h1 {
+    font-size: 48px;
+    font-weight: 900;
+    letter-spacing: 4px;
+    text-shadow: 0 0 18px #7c3aed;
+}
+
+.esports-hero p {
+    color: #e5e7eb;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+.side-card,
+.form-card {
+    background: rgba(15, 23, 42, 0.94);
+    border: 1px solid #334155;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 0 25px rgba(124, 58, 237, 0.15);
+}
+
+.championship-badge {
+    border: 2px solid #8b5cf6;
+    border-radius: 18px;
+    padding: 30px 10px;
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.35), rgba(15, 23, 42, 0.9));
+}
+
+.championship-badge h2,
+.championship-badge h3 {
+    font-weight: 900;
+    margin: 0;
+}
+
+.championship-badge h4 {
+    color: #a855f7;
+    font-weight: 900;
+}
+
+.tagline {
+    color: #a855f7;
+    margin-top: 25px;
+    font-weight: 900;
+}
+
+.small-text {
+    color: #cbd5e1;
+}
+
+.info-box {
+    margin: 22px 0;
+}
+
+.info-box span {
+    text-transform: uppercase;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.info-box h5 {
+    color: #a855f7;
+    font-weight: 900;
+    font-size: 24px;
+    margin: 5px 0;
+}
+
+.info-box small {
+    color: #e5e7eb;
+    text-transform: uppercase;
+}
+
+.countdown {
+    background: #020617;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.countdown p {
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 13px;
+}
+
+.countdown div div {
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 8px;
+    min-width: 52px;
+}
+
+.countdown strong {
+    display: block;
+    color: #a78bfa;
+    font-size: 22px;
+}
+
+.countdown small {
+    display: block;
+    color: #93c5fd;
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+.arena-box {
+    height: 160px;
+    border-radius: 12px;
+    background:
+            linear-gradient(rgba(88, 28, 135, 0.45), rgba(2, 6, 23, 0.9)),
+            url("https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    padding: 20px;
+}
+
+.arena-box p {
+    color: #facc15;
+    font-weight: 900;
+}
+
+.section-title {
+    color: #c084fc;
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 22px;
+    margin-bottom: 22px;
+}
+
+.form-label {
+    color: #f8fafc;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.gaming-input {
+    background-color: #020617;
+    border: 1px solid #334155;
+    color: white;
+    min-height: 48px;
+}
+
+.gaming-input:focus {
+    background-color: #020617;
+    color: white;
+    border-color: #a855f7;
+    box-shadow: 0 0 0 0.2rem rgba(168, 85, 247, 0.25);
+}
+
+.gaming-input::placeholder {
+    color: #94a3b8;
+}
+
+.roster-table {
+    color: white;
+    border: 1px solid #334155;
+}
+
+.roster-table thead th {
+    background: #111827;
+    color: white;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.roster-table td {
+    background: rgba(2, 6, 23, 0.7);
+    border-color: #334155;
+}
+
+.player-number {
+    color: #a855f7;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.extra-player-box {
+    border: 1px dashed #a855f7;
+    color: #c084fc;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-weight: 800;
+}
+
+.extra-player-box span {
+    float: right;
+    color: #d1d5db;
+    font-weight: 400;
+}
+
+.reminder-box {
+    border: 1px solid #a855f7;
+    background: linear-gradient(90deg, rgba(88, 28, 135, 0.35), rgba(15, 23, 42, 0.8));
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.reminder-box h5 {
+    color: #c084fc;
+    text-transform: uppercase;
+    font-weight: 900;
+}
+
+.register-btn {
+    background: linear-gradient(90deg, #9333ea, #2563eb);
+    color: white;
+    height: 56px;
+    border: none;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.register-btn:hover {
+    background: linear-gradient(90deg, #a855f7, #3b82f6);
+    color: white;
+}
+
+.cancel-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid #475569;
+    height: 56px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-top: 15px;
+}
+
+.cancel-btn:hover {
+    background: #1e293b;
+    color: white;
 }
