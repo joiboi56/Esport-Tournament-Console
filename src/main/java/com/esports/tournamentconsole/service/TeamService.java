@@ -20,7 +20,7 @@ public class TeamService {
     }
 
     public List<Team> findAll() {
-        return teamRepository.findAll();
+        return teamRepository.findAllByOrderByTeamIdAsc();
     }
 
     public Team findById(Long teamId) {
