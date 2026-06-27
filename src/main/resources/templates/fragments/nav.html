@@ -1,13 +1,27 @@
 <div th:fragment="nav">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">Esports Console</a>
+            <a class="navbar-brand" href="/home">Esports Console</a>
 
             <div class="navbar-nav">
-                <a class="nav-link" href="/teams/register">Register Team</a>
+                <a class="nav-link" href="/home">Home</a>
                 <a class="nav-link" href="/leaderboard">Leaderboard</a>
                 <a class="nav-link" href="/matches/upcoming">Schedule</a>
+
+                <!-- Admin only -->
+                <a class="nav-link"
+                   th:if="${session.loggedUser != null and session.loggedUser.role.name() == 'ADMIN'}"
+                   href="/teams">
+                    Teams
+                </a>
             </div>
+
+            <!-- Logout -->
+            <a class="btn btn-outline-danger btn-sm ms-3"
+               th:if="${session.loggedUser != null}"
+               href="/logout">
+                Logout
+            </a>
         </div>
     </nav>
 </div>

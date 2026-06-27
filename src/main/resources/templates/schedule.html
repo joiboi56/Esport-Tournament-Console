@@ -56,7 +56,7 @@
 
                 </div>
 
-                <div class="match-action">
+                <div class="match-action" th:if="${session.loggedUser != null and session.loggedUser.role.name() == 'ADMIN'}">
                     <a th:href="@{/matches/{id}/update-score(id=${m.matchId})}"
                        class="btn match-btn">
                         Enter Result

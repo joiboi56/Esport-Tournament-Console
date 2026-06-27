@@ -84,6 +84,7 @@
 
           <td>
             <a class="btn delete-btn"
+               th:if="${session.loggedUser != null and session.loggedUser.role.name() == 'ADMIN'}"
                th:href="@{/teams/{id}/delete(id=${team.teamId})}">
               Delete
             </a>
