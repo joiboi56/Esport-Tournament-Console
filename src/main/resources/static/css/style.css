@@ -585,3 +585,56 @@
     color: #c084fc;
     font-weight: 900;
 }
+
+.match-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 25px;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    background: rgba(2, 6, 23, 0.85);
+}
+
+.team-display {
+    flex: 1;
+    text-align: center;
+}
+
+.team-display h3 {
+    color: #ffffff;
+    font-weight: 900;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.match-date {
+    color: #cbd5e1;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.match-date strong {
+    color: #c084fc;
+}
+
+.versus-box {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    font-size: 22px;
+    box-shadow: 0 0 18px rgba(124, 58, 237, 0.4);
+}
+
+.alert-danger {
+    background: rgba(220, 38, 38, 0.15);
+    color: #fecaca;
+    border: 1px solid #dc2626;
+}
