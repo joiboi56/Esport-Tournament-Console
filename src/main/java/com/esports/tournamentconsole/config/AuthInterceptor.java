@@ -12,7 +12,7 @@ import java.util.List;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private static final List<String> ADMIN_ONLY = List.of("/teams");
+    private static final List<String> ADMIN_ONLY = List.of("/teams", "/teams/{id}/delete");
 
     @Override
     public boolean preHandle(HttpServletRequest req,
@@ -25,11 +25,15 @@ public class AuthInterceptor implements HandlerInterceptor {
             res.sendRedirect("/login");
             return false;
         }
-        if (ADMIN_ONLY.stream().anyMatch(path::startsWith)
-                && user.getRole() != Role.ADMIN) {
+
+        // Only block the teams LIST and DELETE — not register
+        boolean isAdminOnly = (path.equals("/teams") || path.matches("/teams/\\d+/delete"));
+
+        if (isAdminOnly && user.getRole() != Role.ADMIN) {
             res.sendRedirect("/home");
             return false;
         }
+
         return true;
     }
 }

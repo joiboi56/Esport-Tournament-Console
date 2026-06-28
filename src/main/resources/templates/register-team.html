@@ -2,120 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Register Team</title>
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 
 <body class="esports-body">
 
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg esports-nav">
-    <div class="container-fluid px-4">
+<div th:replace="fragments/nav :: nav"></div>
 
-        <a class="navbar-brand esports-logo" th:href="@{/}">
-            ESPORTS <span>TOURNAMENT</span>
-        </a>
-
-        <div class="navbar-nav ms-auto">
-
-            <a class="nav-link" th:href="@{/}">HOME</a>
-            <a class="nav-link" th:href="@{/teams}">TEAMS</a>
-            <a class="nav-link" th:href="@{/matches/upcoming}">SCHEDULE</a>
-            <a class="nav-link" th:href="@{/leaderboard}">LEADERBOARD</a>
-
-            <a class="btn nav-register-btn ms-3" th:href="@{/teams/register}">
-                REGISTER TEAM
-            </a>
-
-        </div>
-
-    </div>
-</nav>
-
-<!-- Hero -->
 <section class="esports-hero text-center">
     <h1>REGISTER YOUR TEAM</h1>
     <p>Assemble your squad. Compete. Win.</p>
 </section>
 
-<div class="container-fluid px-4 mt-4">
+<div class="container py-5">
     <div class="row g-4">
-
-        <!-- LEFT PANEL -->
-        <div class="col-lg-3">
-            <div class="side-card text-center">
-
-                <div class="championship-badge">
-                    <h2>ESPORTS</h2>
-                    <h3>CHAMPIONSHIP</h3>
-                    <h4>2026</h4>
-                </div>
-
-                <p class="tagline">COMPETE. CONQUER. CHAMPION.</p>
-
-                <p class="small-text">
-                    The biggest esports tournament of the year is here!
-                </p>
-
-                <hr>
-
-                <div class="info-box">
-                    <span>Prize Pool</span>
-                    <h5>RM 50,000</h5>
-                </div>
-
-                <div class="info-box">
-                    <span>Team Size</span>
-                    <h5>5 - 7</h5>
-                </div>
-
-                <div class="info-box">
-                    <span>Region</span>
-                    <h5>SEA, EU, NA</h5>
-                </div>
-
-                <!-- ✅ LIVE COUNTDOWN -->
-                <div class="countdown text-center mt-4">
-
-                    <p>Registration Ends In</p>
-
-                    <div class="d-flex justify-content-center gap-3">
-
-                        <div class="count-box">
-                            <strong id="days">00</strong><br>
-                            <small>Days</small>
-                        </div>
-
-                        <div class="count-box">
-                            <strong id="hours">00</strong><br>
-                            <small>Hours</small>
-                        </div>
-
-                        <div class="count-box">
-                            <strong id="minutes">00</strong><br>
-                            <small>Minutes</small>
-                        </div>
-
-                        <div class="count-box">
-                            <strong id="seconds">00</strong><br>
-                            <small>Seconds</small>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="arena-box mt-4">
-                    <p>YOUR SQUAD STARTS HERE</p>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- FORM -->
-        <div class="col-lg-9">
-
+        <div class="col-12">
             <div class="form-card">
 
                 <h3 class="section-title">Team Information</h3>
@@ -123,13 +25,11 @@
                 <form th:action="@{/teams/register}" th:object="${team}" method="post">
 
                     <div class="row">
-
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Team Name</label>
                             <input type="text" class="form-control gaming-input"
                                    th:field="*{teamName}" required>
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Region</label>
                             <select class="form-select gaming-input" th:field="*{region}" required>
@@ -139,7 +39,6 @@
                                 <option value="NA">NA</option>
                             </select>
                         </div>
-
                     </div>
 
                     <div class="mb-4">
@@ -153,7 +52,6 @@
                     <h3 class="section-title">Player Roster</h3>
 
                     <div class="table-responsive">
-
                         <table class="table roster-table align-middle">
                             <thead>
                             <tr>
@@ -162,16 +60,13 @@
                                 <th>Role</th>
                             </tr>
                             </thead>
-
                             <tbody>
                             <tr th:each="player, iter : *{players}">
                                 <td th:text="${iter.index + 1}"></td>
-
                                 <td>
                                     <input type="text" class="form-control gaming-input"
                                            th:field="*{players[__${iter.index}__].gameHandle}" required>
                                 </td>
-
                                 <td>
                                     <select class="form-select gaming-input"
                                             th:field="*{players[__${iter.index}__].inGameRole}" required>
@@ -188,67 +83,29 @@
                                 </td>
                             </tr>
                             </tbody>
-
                         </table>
-
                     </div>
 
                     <div class="row mt-4">
-
                         <div class="col-md-7">
                             <button type="submit" class="btn register-btn w-100">
                                 Register Team
                             </button>
                         </div>
-
                         <div class="col-md-5 mt-2 mt-md-0">
                             <a th:href="@{/teams}" class="btn cancel-btn w-100">
                                 Cancel
                             </a>
                         </div>
-
                     </div>
 
                 </form>
-
             </div>
-
         </div>
-
     </div>
 </div>
 
-<!-- ✅ COUNTDOWN SCRIPT -->
-<script>
-
-    const deadline = new Date("july 4, 2026 23:59:59").getTime();
-
-    function updateCountdown() {
-
-        const now = new Date().getTime();
-        const distance = deadline - now;
-
-        if (distance < 0) {
-            document.querySelector(".countdown").innerHTML =
-                "<h5 class='text-warning'>Registration Closed</h5>";
-            return;
-        }
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        document.getElementById("days").textContent = days;
-        document.getElementById("hours").textContent = hours;
-        document.getElementById("minutes").textContent = minutes;
-        document.getElementById("seconds").textContent = seconds;
-    }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-</script>
+<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 </html>

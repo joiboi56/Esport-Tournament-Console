@@ -12,7 +12,14 @@ public class HomeController {
     @GetMapping("/home")
     public String home(HttpSession session, Model model) {
         User user = (User) session.getAttribute("loggedUser");
+        if (user == null) return "redirect:/login";
         model.addAttribute("role", user.getRole().name());
         return "home";
+
+
+    }
+    @GetMapping("/")
+    public String root() {
+        return "redirect:/home";
     }
 }
