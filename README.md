@@ -268,24 +268,13 @@ A few things worth addressing before sharing or deploying this project publicly:
 
 ## Team
 
-| Name | Role | Contact / GitHub |
-| --- | --- | --- |
-| ISMAIL BIN BAKHTIAR | Backend / DB
-Lead | joiboi56 |
-|TENGKU EYMRAN
-RADHI PUTRA BIN
-TENGKU RINALFI
-PUTRA | Frontend / UI
-Lead | _Add GitHub_ |
-| LOQMANNUL HAQIM
-BIN MOHAMAD | MVC / CRUD
-Lead | _Add GitHub_ |
-| MUHAMMAD AIMAN
-HAFIY BIN MOHD
-NIZAM
- | Integration / Git /
-Testing Lead | _Add GitHub_ |
 
+| Member | Role | GitHub |
+| :--- | :--- | :--- |
+| ISMAIL BIN BAKHTIAR | Backend / DB Lead | joiboi56 |
+| TENGKU EYMRAN RADHI PUTRA BIN TENGKU RINALFI PUTRA | Frontend / UI Lead | bigboss249 |
+| LOQMANNUL HAQIM BIN MOHAMAD | MVC / CRUD Lead | |
+| MUHAMMAD AIMAN HAFIY BIN MOHD NIZAM | Integration / Git / Testing Lead | |
 
 ---
 
